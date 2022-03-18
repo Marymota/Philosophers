@@ -6,7 +6,7 @@
 /*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/18 01:28:06 by marmota          ###   ########.fr       */
+/*   Updated: 2022/03/18 19:29:12 by marmota          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	death(t_sim *sim, t_philos *philo)
 		pthread_mutex_unlock(&sim->end);
 		return (1);
 	}
-	if (sim->finish_eat >= sim->specs.n_of_philos)
+	else if (sim->finish_eat >= sim->specs.n_of_philos && !sim->dead)
 	{
 		pthread_mutex_lock(&sim->end);
 		sim->dead = 1;
@@ -46,17 +46,6 @@ void	free_structs(t_sim *sim)
 {
 	int	i;
 
-	pthread_mutex_destroy(&sim->write);	
-	pthread_mutex_destroy(&sim->increment);
-	pthread_mutex_destroy(&sim->time_meal);
-	pthread_mutex_destroy(&sim->end);
-	pthread_mutex_destroy(&sim->philos[0].left_fork);
-	i = 0;
-	while (i < sim->specs.n_of_philos - 1)
-	{
-		pthread_mutex_destroy(sim->philos[i].right_fork);
-		++i;
-	}
 	i = 0;
 	while (i < sim->specs.n_of_philos)
 	{

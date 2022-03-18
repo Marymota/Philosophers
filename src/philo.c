@@ -6,7 +6,7 @@
 /*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 17:12:56 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/18 01:21:50 by marmota          ###   ########.fr       */
+/*   Updated: 2022/03/18 17:36:14 by marmota          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ int	main(int argc, char *argv[])
 	if (!sim)
 		exit_error(sim, "sim allocation failed");
 	init_sim(sim, argc, argv);
-	init_threads(sim);
+	if (init_threads(sim))
+		monitor(sim);
 	free_structs(sim);
 	return (0);
 }

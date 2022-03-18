@@ -6,13 +6,13 @@
 /*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:30 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/18 01:27:46 by marmota          ###   ########.fr       */
+/*   Updated: 2022/03/18 16:18:28 by marmota          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	init_sim(t_sim *sim, int argc, char *argv[])
+int	init_sim(t_sim *sim, int argc, char *argv[])
 {
 	init_specs(sim, argc, argv);
 	pthread_mutex_init(&sim->increment, NULL);
@@ -24,6 +24,7 @@ void	init_sim(t_sim *sim, int argc, char *argv[])
 	sim->start = get_time();
 	init_philos(sim, sim->start);
 	init_forks(sim);
+	return (1);
 }
 
 void	init_specs(t_sim *sim, int argc, char *argv[])
@@ -77,27 +78,18 @@ void	init_forks(t_sim *sim)
 	sim->philos[0].right_fork = &sim->philos[sim->specs.n_of_philos - 1].left_fork;
 }
 
-void	init_threads(t_sim *sim)
+int	init_threads(t_sim *sim)
 {
 	int	i;
 
 	sim->threads = (pthread_t *)malloc(sizeof(pthread_t) * sim->specs.n_of_philos);
 	if (!sim->threads)
 		exit_error(sim, "threads allocation failed");
-	if (pthread_create(&sim->monitor, NULL, &monitor, sim) != 0)
-		exit_error(sim, "Thread creation failed\n");
 	i = -1;
 	while (++i < sim->specs.n_of_philos)
 	{
 		if (pthread_create(&sim->threads[i], NULL, &action, sim) != 0)
 			exit_error(sim, "Thread creation failed\n");
 	}
-	i = -1;
-	while (++i < sim->specs.n_of_philos)
-	{
-		if (pthread_detach(sim->threads[i]) != 0)
-			exit_error(sim, "Thread join failed\n");
-	}
-	if (pthread_join(sim->monitor, NULL) != 0)
-		exit_error(sim, "Thread join failed\n");
+	return (1);
 }
