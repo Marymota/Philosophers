@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:17 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/18 19:58:08 by marmota          ###   ########.fr       */
+/*   Updated: 2022/03/22 17:29:07 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,11 @@ int	sleeping(t_sim *sim, t_philos *philo)
 		pthread_mutex_unlock(&sim->write);
 		pthread_mutex_unlock(&philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
-		ft_usleep(sim->specs.time_to_sleep);
-		return (1);
+		if (!sim->dead)
+		{
+			ft_usleep(sim->specs.time_to_sleep);
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -59,14 +62,21 @@ int	eating(t_sim *sim, t_philos *philo)
 
 void	get_forks(t_sim *sim, t_philos *philo)
 {
-	pthread_mutex_lock(&philo->left_fork);
-	pthread_mutex_lock(&sim->write);
-	printf("%li %i has taken a fork\n", get_time() - sim->start, philo->id);
-	pthread_mutex_unlock(&sim->write);
-	pthread_mutex_lock(philo->right_fork);
-	pthread_mutex_lock(&sim->write);
-	printf("%li %i has taken a fork\n", get_time() - sim->start, philo->id);
-	pthread_mutex_unlock(&sim->write);
+	long int	current_time;
+
+	if (!sim->dead)
+	{
+		pthread_mutex_lock(&philo->left_fork);
+		pthread_mutex_lock(&sim->write);
+		current_time = get_time() - sim->start;
+		printf("%li %i has taken a fork\n", current_time, philo->id);
+		pthread_mutex_unlock(&sim->write);
+		pthread_mutex_lock(philo->right_fork);
+		pthread_mutex_lock(&sim->write);
+		current_time = get_time() - sim->start;
+		printf("%li %i has taken a fork\n", current_time, philo->id);
+		pthread_mutex_unlock(&sim->write);
+	}
 }
 
 void	*action(void *arg)
@@ -79,11 +89,8 @@ void	*action(void *arg)
 	pthread_mutex_lock(&sim->increment);
 	philo = &sim->philos[++i];
 	pthread_mutex_unlock(&sim->increment);
-	if (sim->specs.n_of_philos == 1)
-	{
-		ft_usleep(sim->specs.time_to_die);
+	if (sim->specs.n_philos == 1)
 		return (0);
-	}
 	if (philo->id % 2 != 0)
 		ft_usleep(sim->specs.time_to_die / 10);
 	while (1)
@@ -93,40 +100,10 @@ void	*action(void *arg)
 			get_forks(sim, philo);
 		pthread_mutex_unlock(&sim->end);
 		if (!eating(sim, philo))
-			break;
+			break ;
 		if (!sleeping(sim, philo))
-			break;
-		if (!thinking(sim, philo))
-			break;
+			break ;
+		thinking(sim, philo);
 	}
 	return (0);
-}
-
-void	monitor(t_sim *sim)
-{
-	int	i;
-
-	i = 0;
-	while (!death(sim, &sim->philos[i]))
-	{
-		if (++i == sim->specs.n_of_philos)
-			i = 0;
-	}
-	i = 0;
-	while (i < sim->specs.n_of_philos - 1)
-	{
-		pthread_mutex_destroy(sim->philos[i].right_fork);
-		++i;
-	}
-	i = -1;
-	while (++i < sim->specs.n_of_philos)
-	{
-		if (pthread_join(sim->threads[i], NULL) != 0)
-			exit_error(sim, "Thread join failed\n");
-	}
-	pthread_mutex_destroy(&sim->write);	
-	pthread_mutex_destroy(&sim->increment);
-	pthread_mutex_destroy(&sim->time_meal);
-	pthread_mutex_destroy(&sim->end);
-	pthread_mutex_destroy(&sim->philos[0].left_fork);
 }

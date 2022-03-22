@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:33:24 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/18 19:41:31 by marmota          ###   ########.fr       */
+/*   Updated: 2022/03/22 16:50:03 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 typedef struct s_specs
 {
-	int	n_of_philos;
+	int	n_philos;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
@@ -53,21 +53,34 @@ typedef struct s_sim
 	pthread_mutex_t	end;
 }				t_sim;
 
+//philo
 void		error_handling(int argc, char *argv[]);
+
+//init
 int			init_sim(t_sim *sim, int argc, char *argv[]);
 void		init_specs(t_sim *sim, int argc, char *argv[]);
 void		init_philos(t_sim *sim, long int start);
 void		init_forks(t_sim *sim);
 int			init_threads(t_sim *sim);
+
+//simulation
 void		*action(void *arg);
-long int	get_time(void);
-void		free_structs(t_sim *sim);
-void		ft_usleep(long int time);
+void		get_forks(t_sim *sim, t_philos *philo);
+int			eating(t_sim *sim, t_philos *philo);
+int			sleeping(t_sim *sim, t_philos *philo);
+int			thinking(t_sim *sim, t_philos *philo);
+
+//libft
 int			ft_atoi(const char *n);
 int			ft_isdigit(int c);
-int			exit_error(t_sim *sim, char *err);
-void		init_mutex(t_sim *sim);
-int			death(t_sim *sim, t_philos *philo);
+long int	get_time(void);
+void		ft_usleep(long int time);
+
+//exit
 void		monitor(t_sim *sim);
+void		free_structs(t_sim *sim);
+int			exit_error(t_sim *sim, char *err);
+int			death(t_sim *sim, t_philos *philo);
+int			end_meals(t_sim *sim, t_philos *philo);
 
 #endif

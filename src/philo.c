@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 17:12:56 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/18 17:36:14 by marmota          ###   ########.fr       */
+/*   Updated: 2022/03/22 16:53:36 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	error_handling(int argc, char *argv[])
 
 int	main(int argc, char *argv[])
 {
-	t_sim *sim;
+	t_sim	*sim;
 
 	error_handling(argc, argv);
 	sim = (t_sim *)malloc(sizeof(t_sim));
