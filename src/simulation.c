@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:17 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/22 17:29:07 by mmota            ###   ########.fr       */
+/*   Updated: 2022/03/22 20:38:13 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,13 @@ int	eating(t_sim *sim, t_philos *philo)
 		pthread_mutex_lock(&sim->write);
 		printf("%li %i is eating\n", (get_time() - sim->start), philo->id);
 		pthread_mutex_unlock(&sim->write);
-		pthread_mutex_lock(&sim->time_meal);
 		if (--philo->meals_count == 0)
+		{
+			pthread_mutex_lock(&sim->write);
 			sim->finish_eat++;
+			pthread_mutex_unlock(&sim->write);
+		}
+		pthread_mutex_lock(&sim->time_meal);
 		philo->time_meal = get_time();
 		pthread_mutex_unlock(&sim->time_meal);
 		ft_usleep(sim->specs.time_to_eat);
