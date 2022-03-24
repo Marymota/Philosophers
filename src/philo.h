@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:33:24 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/22 16:50:03 by mmota            ###   ########.fr       */
+/*   Updated: 2022/03/24 12:44:05 by marmota          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,6 @@ void		monitor(t_sim *sim);
 void		free_structs(t_sim *sim);
 int			exit_error(t_sim *sim, char *err);
 int			death(t_sim *sim, t_philos *philo);
-int			end_meals(t_sim *sim, t_philos *philo);
+int			end_meals(t_sim *sim);
 
 #endif

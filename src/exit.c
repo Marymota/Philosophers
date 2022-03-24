@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/22 20:41:15 by mmota            ###   ########.fr       */
+/*   Updated: 2022/03/24 19:40:33 by marmota          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	monitor(t_sim *sim)
 	int	i;
 
 	i = 0;
-	while (!death(sim, &sim->philos[i]) && (!end_meals(sim, &sim->philos[i])))
+	while (!death(sim, &sim->philos[i]) && (!end_meals(sim)))
 	{
 		if (++i == sim->specs.n_philos)
 			i = 0;
@@ -41,13 +41,8 @@ void	monitor(t_sim *sim)
 	pthread_mutex_destroy(&sim->philos[0].left_fork);
 }
 
-int	end_meals(t_sim *sim, t_philos *philo)
+int	end_meals(t_sim *sim)
 {
-	long	death_time;
-
-	pthread_mutex_lock(&sim->time_meal);
-	death_time = get_time() - philo->time_meal;
-	pthread_mutex_unlock(&sim->time_meal);
 	if (sim->finish_eat >= sim->specs.n_philos && !sim->dead)
 	{
 		pthread_mutex_lock(&sim->end);

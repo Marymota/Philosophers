@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:17 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/22 20:38:13 by mmota            ###   ########.fr       */
+/*   Updated: 2022/03/24 19:39:27 by marmota          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	sleeping(t_sim *sim, t_philos *philo)
 		pthread_mutex_lock(&sim->write);
 		printf("%li %i is sleeping\n", (get_time() - sim->start), philo->id);
 		pthread_mutex_unlock(&sim->write);
-		pthread_mutex_unlock(&philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(&philo->left_fork);
 		if (!sim->dead)
 		{
 			ft_usleep(sim->specs.time_to_sleep);
@@ -100,7 +100,7 @@ void	*action(void *arg)
 	while (1)
 	{
 		pthread_mutex_lock(&sim->end);
-		if (!sim->dead)
+		if (!sim->dead && philo->meals_count == 0)
 			get_forks(sim, philo);
 		pthread_mutex_unlock(&sim->end);
 		if (!eating(sim, philo))
