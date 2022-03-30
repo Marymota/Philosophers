@@ -18,7 +18,7 @@ FLAG_PTHREAD		:=	-pthread
 FLAG_OPTIMIZATION	:=	-03
 FLAGS_COMP			:=	$(FLAG_WARNING) $(FLAG_INC) $(FLAG_MAKEFILE) $(FLAG_DEBUG) $(FLAG_PTHREAD) $(FLAG_MEM_LEAK)
 
-FLAD_MEM_LEAK		:=	-fsanitize=address
+FLAG_MEM_LEAK		:=	-fsanitize=address
 FLAG_RACE_CONDITION	:=	-fsanitize=thread
 
 RM					:=	rm -rf

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/24 19:40:33 by marmota          ###   ########.fr       */
+/*   Updated: 2022/03/30 21:24:48 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ void	monitor(t_sim *sim)
 	int	i;
 
 	i = 0;
-	while (!death(sim, &sim->philos[i]) && (!end_meals(sim)))
+	while (!death(sim, &sim->philos[i]) && !end_meals(sim))
 	{
 		if (++i == sim->specs.n_philos)
 			i = 0;
+		ft_usleep(10);
 	}
-	i = 0;
-	while (i < sim->specs.n_philos - 1)
+	i = -1;
+	while (++i < sim->specs.n_philos - 1)
 	{
 		pthread_mutex_destroy(sim->philos[i].right_fork);
-		++i;
 	}
 	i = -1;
 	while (++i < sim->specs.n_philos)
