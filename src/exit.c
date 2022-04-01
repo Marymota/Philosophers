@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/30 21:24:48 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/01 13:09:21 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	monitor(t_sim *sim)
 	{
 		if (++i == sim->specs.n_philos)
 			i = 0;
-		ft_usleep(10);
+		ft_usleep(1);
 	}
 	i = -1;
 	while (++i < sim->specs.n_philos - 1)

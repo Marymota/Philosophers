@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:17 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/30 21:45:51 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/01 13:15:27 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	sleeping(t_sim *sim, t_philos *philo)
 		pthread_mutex_unlock(&sim->write);
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(&philo->left_fork);
-		ft_usleep(sim->specs.time_to_sleep);
+		if (!sim->dead)
+			ft_usleep(sim->specs.time_to_sleep);
 		return (1);
 	}
 	return (0);
@@ -99,9 +100,10 @@ void	*action(void *arg)
 		pthread_mutex_unlock(&sim->end);
 		if (philo->meals_count != 0 && !eating(sim, philo))
 			break ;
-		if (!sleeping(sim, philo))
+		if (!sim->dead && !sleeping(sim, philo))
 			break ;
-		thinking(sim, philo);
+		if (!thinking(sim, philo))
+			break;
 	}
 	return (0);
 }
