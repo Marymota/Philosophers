@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/01 13:09:21 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/01 22:47:02 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	monitor(t_sim *sim)
 	{
 		if (++i == sim->specs.n_philos)
 			i = 0;
-		ft_usleep(1);
 	}
 	i = -1;
 	while (++i < sim->specs.n_philos - 1)
@@ -58,18 +57,18 @@ int	end_meals(t_sim *sim)
 
 int	death(t_sim *sim, t_philos *philo)
 {
-	long	death_time;
+	long int	curr_time;
+	long int	death_time;
 
+	curr_time = get_time();
 	pthread_mutex_lock(&sim->time_meal);
-	death_time = get_time() - philo->time_meal;
+	death_time = curr_time - philo->time_meal;
 	pthread_mutex_unlock(&sim->time_meal);
-	if (death_time > sim->specs.time_to_die && !sim->dead)
+	if (death_time >= sim->specs.time_to_die && !sim->dead)
 	{
 		pthread_mutex_lock(&sim->end);
 		sim->dead = 1;
-		pthread_mutex_lock(&sim->write);
-		printf("%li %i died\n", get_time() - sim->start, philo->id);
-		pthread_mutex_unlock(&sim->write);
+		printf("%li %i died\n", curr_time - sim->start, philo->id);
 		pthread_mutex_unlock(&sim->end);
 		return (1);
 	}
