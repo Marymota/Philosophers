@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:33:24 by mmota             #+#    #+#             */
-/*   Updated: 2022/03/30 21:15:29 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/05 20:35:47 by marmota          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int			init_threads(t_sim *sim);
 
 //simulation
 void		*action(void *arg);
-void		get_forks(t_sim *sim, t_philos *philo);
+int			get_forks(t_sim *sim, t_philos *philo);
 int			eating(t_sim *sim, t_philos *philo);
 int			sleeping(t_sim *sim, t_philos *philo);
 int			thinking(t_sim *sim, t_philos *philo);

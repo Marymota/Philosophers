@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/01 22:47:02 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/05 20:58:27 by marmota          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,16 @@ int	death(t_sim *sim, t_philos *philo)
 	long int	curr_time;
 	long int	death_time;
 
-	curr_time = get_time();
-	pthread_mutex_lock(&sim->time_meal);
+	curr_time = get_time() - sim->start;
+	pthread_mutex_lock(&sim->end);
 	death_time = curr_time - philo->time_meal;
-	pthread_mutex_unlock(&sim->time_meal);
-	if (death_time >= sim->specs.time_to_die && !sim->dead)
+	if (death_time >= sim->specs.time_to_die)
 	{
-		pthread_mutex_lock(&sim->end);
 		sim->dead = 1;
-		printf("%li %i died\n", curr_time - sim->start, philo->id);
-		pthread_mutex_unlock(&sim->end);
+		printf("%li %i died\n", curr_time, philo->id);
 		return (1);
 	}
+	pthread_mutex_unlock(&sim->end);
 	return (0);
 }
 
