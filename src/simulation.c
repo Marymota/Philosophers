@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simulation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:17 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/05 21:27:11 by marmota          ###   ########.fr       */
+/*   Updated: 2022/04/06 17:38:01 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ int	thinking(t_sim *sim, t_philos *philo)
 
 	if (!sim->dead)
 	{
+		pthread_mutex_lock(&sim->end);
 		pthread_mutex_lock(&sim->write);
 		current_time = get_time() - sim->start;
 		printf("%li %i is thinking\n", current_time, philo->id);
 		pthread_mutex_unlock(&sim->write);
+		pthread_mutex_unlock(&sim->end);
 		return (1);
 	}
 	return (0);
@@ -55,9 +57,7 @@ int	eating(t_sim *sim, t_philos *philo)
 	if (!sim->dead)
 	{
 		pthread_mutex_lock(&sim->end);
-		pthread_mutex_lock(&sim->write);
 		printf("%li %i is eating\n", current_time, philo->id);
-		pthread_mutex_unlock(&sim->write);
 		pthread_mutex_unlock(&sim->end);
 		pthread_mutex_lock(&sim->time_meal);
 		philo->time_meal = current_time;
