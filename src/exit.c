@@ -6,17 +6,14 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/06 17:33:40 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/06 21:19:20 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	monitor(t_sim *sim)
+void	monitor(t_sim *sim, int i)
 {
-	int	i;
-
-	i = 0;
 	while (!death(sim, &sim->philos[i]) && !end_meals(sim))
 	{
 		if (++i == sim->specs.n_philos)
@@ -55,25 +52,35 @@ int	end_meals(t_sim *sim)
 	return (0);
 }
 
+int	is_dying(t_sim *sim, t_philos *philo)
+{
+	long int	curr_time;
+	long int	death_time;
+	
+	curr_time = get_time() - sim->start;
+	death_time = curr_time - philo->time_meal;
+	if (death_time >= sim->specs.time_to_die)
+		return (1);
+	return (0);
+}
+
 int	death(t_sim *sim, t_philos *philo)
 {
 	long int	curr_time;
 	long int	death_time;
-
+	
 	curr_time = get_time() - sim->start;
-	pthread_mutex_lock(&sim->end);
 	pthread_mutex_lock(&sim->time_meal);
 	death_time = curr_time - philo->time_meal;
 	pthread_mutex_unlock(&sim->time_meal);
 	if (death_time >= sim->specs.time_to_die)
 	{
+		pthread_mutex_lock(&sim->end);
 		sim->dead = 1;
-		pthread_mutex_lock(&sim->write);
 		printf("%li %i died\n", curr_time, philo->id);
-		pthread_mutex_unlock(&sim->write);
+		pthread_mutex_unlock(&sim->end);
 		return (1);
 	}
-	pthread_mutex_unlock(&sim->end);
 	return (0);
 }
 

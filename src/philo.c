@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 17:12:56 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/05 21:23:22 by marmota          ###   ########.fr       */
+/*   Updated: 2022/04/06 20:07:19 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	main(int argc, char *argv[])
 		exit_error(sim, "sim allocation failed");
 	init_sim(sim, argc, argv);
 	if (init_threads(sim))
-		monitor(sim);
+		monitor(sim, 0);
 	free_structs(sim);
 	return (0);
 }

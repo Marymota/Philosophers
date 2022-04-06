@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:33:24 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/05 20:35:47 by marmota          ###   ########.fr       */
+/*   Updated: 2022/04/06 20:32:56 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,11 @@ long int	get_time(void);
 void		ft_usleep(long int time);
 
 //exit
-void		monitor(t_sim *sim);
+void		monitor(t_sim *sim, int i);
 void		free_structs(t_sim *sim);
 int			exit_error(t_sim *sim, char *err);
 int			death(t_sim *sim, t_philos *philo);
+int			is_dying(t_sim *sim, t_philos *philo);
 int			end_meals(t_sim *sim);
 
 #endif

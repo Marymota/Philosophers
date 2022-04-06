@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marmota <marmota@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:30 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/05 21:23:39 by marmota          ###   ########.fr       */
+/*   Updated: 2022/04/06 20:18:51 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	init_threads(t_sim *sim)
 	if (!sim->threads)
 		exit_error(sim, "threads allocation failed");
 	i = -1;
-	while (++i < sim->specs.n_philos)
+	while (++i < sim->specs.n_philos && !sim->dead)
 	{
 		if (pthread_create(&sim->threads[i], NULL, &action, sim) != 0)
 			exit_error(sim, "Thread creation failed\n");
