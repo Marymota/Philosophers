@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/06 21:19:20 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/08 19:54:44 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	monitor(t_sim *sim, int i)
 		if (++i == sim->specs.n_philos)
 			i = 0;
 	}
+	ft_usleep(100);
 	i = -1;
 	while (++i < sim->specs.n_philos - 1)
 	{
@@ -78,9 +79,12 @@ int	death(t_sim *sim, t_philos *philo)
 		pthread_mutex_lock(&sim->end);
 		sim->dead = 1;
 		printf("%li %i died\n", curr_time, philo->id);
+		ft_usleep(100);
 		pthread_mutex_unlock(&sim->end);
 		return (1);
 	}
+	ft_usleep(100);
+	pthread_mutex_unlock(&sim->end);
 	return (0);
 }
 
