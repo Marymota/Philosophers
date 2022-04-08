@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/08 19:54:44 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/08 22:14:01 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int	death(t_sim *sim, t_philos *philo)
 	long int	curr_time;
 	long int	death_time;
 	
-	curr_time = get_time() - sim->start;
 	pthread_mutex_lock(&sim->time_meal);
+	curr_time = get_time() - sim->start;
 	death_time = curr_time - philo->time_meal;
 	pthread_mutex_unlock(&sim->time_meal);
 	if (death_time >= sim->specs.time_to_die)
@@ -79,7 +79,7 @@ int	death(t_sim *sim, t_philos *philo)
 		pthread_mutex_lock(&sim->end);
 		sim->dead = 1;
 		printf("%li %i died\n", curr_time, philo->id);
-		ft_usleep(100);
+		ft_usleep(1000);
 		pthread_mutex_unlock(&sim->end);
 		return (1);
 	}
