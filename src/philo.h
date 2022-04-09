@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:33:24 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/09 13:39:36 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/09 20:48:49 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_philos
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	left_fork;
 	long int		time_meal;
+	int				dead;
 }				t_philos;
 
 typedef struct s_sim
@@ -81,7 +82,7 @@ void		monitor(t_sim *sim, int i);
 void		free_structs(t_sim *sim);
 int			exit_error(t_sim *sim, char *err);
 int			death(t_sim *sim, t_philos *philo);
-int			is_dying(t_sim *sim, t_philos *philo);
+int			is_dying(t_sim *sim, t_philos *philo, long int time);
 int			end_meals(t_sim *sim);
 
 int			get_leftfork(t_sim *sim, t_philos *philo);

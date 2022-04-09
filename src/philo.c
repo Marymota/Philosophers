@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 17:12:56 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/06 20:07:19 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/09 21:39:47 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,13 @@ void	one_philo_death(char *argv[])
 	start = get_time();
 	ft_usleep(ft_atoi(argv[2]));
 	printf("%li %i died\n", get_time() - start, 1);
+}
+
+int	exit_error(t_sim *sim, char *err)
+{
+	printf("%s\n", err);
+	free_structs(sim);
+	exit(EXIT_FAILURE);
 }
 
 void	error_handling(int argc, char *argv[])

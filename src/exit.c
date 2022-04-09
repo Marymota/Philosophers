@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/09 17:01:43 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/09 23:06:05 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	monitor(t_sim *sim, int i)
 		if (++i == sim->specs.n_philos)
 			i = 0;
 	}
-	ft_usleep(1000);
+	i = -1;
+	while (++i == sim->specs.n_philos)
+		sim->philos[i].dead = 1;
+	ft_usleep(1);
 	i = -1;
 	while (++i < sim->specs.n_philos - 1)
 	{
@@ -58,23 +61,34 @@ int	death(t_sim *sim, t_philos *philo)
 	long int	curr_time;
 	long int	death_time;
 
+	pthread_mutex_lock(&sim->end);
 	pthread_mutex_lock(&sim->time_meal);
 	curr_time = get_time() - sim->start;
 	death_time = curr_time - philo->time_meal;
-	pthread_mutex_unlock(&sim->time_meal);
 	if (death_time >= sim->specs.time_to_die)
 	{
-		pthread_mutex_lock(&sim->end);
+		pthread_mutex_unlock(&sim->time_meal);
 		sim->dead = 1;
-		pthread_mutex_lock(&sim->write);
 		printf("%li %i died\n", curr_time, philo->id);
-		ft_usleep(100);
-		pthread_mutex_unlock(&sim->write);
+		ft_usleep(1000);
 		pthread_mutex_unlock(&sim->end);
 		return (1);
 	}
+	pthread_mutex_unlock(&sim->time_meal);
 	pthread_mutex_unlock(&sim->end);
 	return (0);
+}
+
+int	is_dying(t_sim *sim, t_philos *philo, long int time)
+{
+	long int	current_time;
+
+	current_time = get_time() - sim->start;
+	if (time - current_time > 0)
+		return (0);
+	philo->dead = 1;
+	ft_usleep(10);
+	return (1);
 }
 
 void	free_structs(t_sim *sim)
@@ -93,11 +107,4 @@ void	free_structs(t_sim *sim)
 		free(sim->threads);
 	if (sim)
 		free(sim);
-}
-
-int	exit_error(t_sim *sim, char *err)
-{
-	printf("%s\n", err);
-	free_structs(sim);
-	exit(EXIT_FAILURE);
 }

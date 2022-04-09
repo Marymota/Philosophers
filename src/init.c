@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:30 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/06 20:18:51 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/09 20:22:03 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	init_philos(t_sim *sim, long int start)
 		sim->philos[i].id = i + 1;
 		sim->philos[i].meals_count = sim->specs.n_times_philos_must_eat;
 		sim->philos[i].time_meal = start;
+		sim->philos[i].dead = 0;
 	}
 }
 
