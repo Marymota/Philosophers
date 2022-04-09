@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:33:24 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/06 20:32:56 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/09 13:39:36 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,8 @@ int			exit_error(t_sim *sim, char *err);
 int			death(t_sim *sim, t_philos *philo);
 int			is_dying(t_sim *sim, t_philos *philo);
 int			end_meals(t_sim *sim);
+
+int			get_leftfork(t_sim *sim, t_philos *philo);
+int			get_rightfork(t_sim *sim, t_philos *philo);
 
 #endif
