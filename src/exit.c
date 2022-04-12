@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 18:32:35 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/09 17:01:43 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/12 16:52:16 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,13 @@ int	death(t_sim *sim, t_philos *philo)
 	{
 		pthread_mutex_lock(&sim->end);
 		sim->dead = 1;
-		pthread_mutex_lock(&sim->write);
-		printf("%li %i died\n", curr_time, philo->id);
-		ft_usleep(100);
-		pthread_mutex_unlock(&sim->write);
 		pthread_mutex_unlock(&sim->end);
+		pthread_mutex_lock(&sim->write);
+		curr_time = get_time() - sim->start;
+		printf("%li %i died\n", curr_time, philo->id);
+		pthread_mutex_unlock(&sim->write);
 		return (1);
 	}
-	pthread_mutex_unlock(&sim->end);
 	return (0);
 }
 

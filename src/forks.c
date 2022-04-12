@@ -6,7 +6,7 @@
 /*   By: mmota <mmota@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/09 13:38:47 by mmota             #+#    #+#             */
-/*   Updated: 2022/04/09 16:43:12 by mmota            ###   ########.fr       */
+/*   Updated: 2022/04/12 16:52:31 by mmota            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	get_leftfork(t_sim *sim, t_philos *philo)
 		pthread_mutex_unlock(&philo->left_fork);
 		return (0);
 	}
-	pthread_mutex_unlock(&sim->end);
 	take_fork(sim, philo);
+	pthread_mutex_unlock(&sim->end);
 	pthread_mutex_lock(philo->right_fork);
 	pthread_mutex_lock(&sim->end);
 	if (!sim->dead)
@@ -58,8 +58,8 @@ int	get_rightfork(t_sim *sim, t_philos *philo)
 		pthread_mutex_unlock(philo->right_fork);
 		return (0);
 	}
-	pthread_mutex_unlock(&sim->end);
 	take_fork(sim, philo);
+	pthread_mutex_unlock(&sim->end);
 	pthread_mutex_lock(&philo->left_fork);
 	pthread_mutex_lock(&sim->end);
 	if (!sim->dead)
@@ -68,9 +68,9 @@ int	get_rightfork(t_sim *sim, t_philos *philo)
 		take_fork(sim, philo);
 		return (1);
 	}
+	pthread_mutex_unlock(&sim->end);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
-	pthread_mutex_unlock(&sim->end);
 	return (0);
 }
 
@@ -87,11 +87,10 @@ int	get_forks(t_sim *sim, t_philos *philo)
 	pthread_mutex_unlock(&sim->end);
 	if (philo->id % 2 == 0)
 	{
-		ft_usleep(1);
 		if (get_leftfork(sim, philo))
 			return (1);
 	}
-	if (philo->id % 2 != 0)
+	else if (philo->id % 2 != 0)
 		if (get_rightfork(sim, philo))
 			return (1);
 	return (0);
